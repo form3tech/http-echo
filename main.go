@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/http-echo/version"
+	"strconv"
 )
 
 var (
@@ -84,6 +85,14 @@ func main() {
 
 func httpEcho(v string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+
+		if r.URL.Query().Get("status") != "" {
+			status, err := strconv.Atoi(r.URL.Query().Get("status"))
+			if err == nil {
+				w.WriteHeader(status)
+			}
+		}
+
 		fmt.Fprintln(w, v)
 	}
 }
