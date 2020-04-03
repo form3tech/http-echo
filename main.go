@@ -92,6 +92,12 @@ func httpEcho(v string) http.HandlerFunc {
 				w.WriteHeader(status)
 			}
 		}
+		if r.URL.Query().Get("delay") != "" {
+			delay, err := time.ParseDuration(r.URL.Query().Get("delay"))
+			if err == nil {
+				time.Sleep(delay)
+			}
+		}
 
 		fmt.Fprintln(w, v)
 	}
